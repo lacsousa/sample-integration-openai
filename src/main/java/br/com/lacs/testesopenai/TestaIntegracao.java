@@ -5,9 +5,10 @@ import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
 import com.theokanning.openai.service.OpenAiService;
 
+import java.time.Duration;
 import java.util.Arrays;
 
-public class Main {
+public class TestaIntegracao {
 
     public static void main(String[] args) {
         var user = "Gere 5 produtos para um eCommerce";
@@ -15,7 +16,7 @@ public class Main {
         var system = "Você é um gerador de produtos fictícios para um ecommerce e deve gerar apenas o nome dos produtos";
 
         var chaveToken = System.getenv("OPENAI_API_KEY");
-        var service = new OpenAiService(chaveToken);
+        var service = new OpenAiService(chaveToken, Duration.ofSeconds(30));
 
         var completionRequest = ChatCompletionRequest
                 .builder()
@@ -29,6 +30,6 @@ public class Main {
         service
                 .createChatCompletion(completionRequest)
                 .getChoices()
-                .forEach(System.out::println);
+                .forEach(c -> System.out.print(c.getMessage().getContent()));
     }
 }
